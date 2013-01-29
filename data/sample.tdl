@@ -1,55 +1,26 @@
-<!-- http://fedoraproject.org/wiki/Koji/ServerHowTo -->
 <template>
-  <name></name>
+  <name>sample</name>
   <description></description>
-  <cloud>
-    <type></type>
-    <provider></provider>
-    <username></username>
-    <password></password>
-    <image></image>
-    <keyname></keyname>
-    <ssh_cmd></ssh_cmd>
-    <scp_cmd></scp_cmd>
-  </cloud>
-
-  <hostname></hostname>
 
   <os>
       <name></name>
       <version></version>
-      <arch></arch>
-      <install type=\'\'>
-        <url></url>
+      <arch>x86_64</arch>
+      <install type='url'>
+        <url>http://</url>
       </install>
       <rootpw></rootpw>
   </os>
-
-  <firewall>
-    <tcp></tcp>
-  </firewall>
-
-  <users>
-    <user id="" password="" />
-  </users>
 
   <packages>
     <package name="" />
   </packages>
 
-  <services>
-    <service name="" />
-  </services>
-
-  <dirs>
-    <dir owner="" group="" remove=""></dir>
-  </dirs>
-
   <files>
     <file name="">
     </file>
 
-    <file name="" mode="">
+    <file name="">
     </file>
   </files>
 
