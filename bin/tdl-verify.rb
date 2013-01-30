@@ -24,11 +24,15 @@ class TDLVerify < Thor
     errs = xsd.validate(doc)
     if errs.empty?
       say " TDL is valid".bold.green
+      exit 0
+
     else
       say " Errors in TDL".bold.red
       errs.each { |err|
         say "  #{err.message}".red
       }
+      exit 1
+
     end
   end
 
@@ -45,4 +49,4 @@ class TDLVerify < Thor
   end
 end
 
-TDLVerify.start(ARGV)
+TDLVerify.start(ARGV) if __FILE__ == $0
