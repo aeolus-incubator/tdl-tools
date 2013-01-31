@@ -1,0 +1,21 @@
+.TH TDL-TOOLS "1" "January 2013" "tdl-tools verify 0.1.0" "User Commands"
+.SH NAME
+tdl-tools \- manual page for tdl-tools verify 0.1.0
+.SH DESCRIPTION
+Verify a TDL
+Tasks:
+.TP
+tdl\-verify.rb \fB\-\-version\fR
+# Version information
+.TP
+tdl\-verify.rb help
+# Command usage and other information
+.TP
+tdl\-verify.rb verify [path\-to\-tdl]
+# Verify the tdl specified on the command line
+.SH "SEE ALSO"
+tdl-verify is used to validate the format of the TDL specification
+as used by Oz as part of the Aeolus project.
+
+For more information see
+.B http://aeolusproject.org
