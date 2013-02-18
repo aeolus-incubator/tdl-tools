@@ -114,7 +114,7 @@ class TDLLaunch
       }
   end
 
-  def verify_results(etdl, instance)
+  def verify(etdl, instance)
     # TODO
   end
 

@@ -30,18 +30,18 @@ class ETDL
     doc.children.last.children.each { |c|
       if c.name == 'name'
         instance_attributes[:name] = c.text
-    
+
       elsif c.name == 'description'
         instance_attributes[:description] = c.text
-    
+
       elsif c.name == 'hostname'
         instance_attributes[:hostname] = c.text
-    
+
       elsif c.name == 'cloud'
         c.children.each { |ca|
           cloud_attributes[ca.name.intern] = ca.text
         }
-    
+
       elsif c.name == 'firewall'
         c.children.each { |rule|
           if rule.name == "tcp" || rule.name == "udp"
@@ -49,7 +49,7 @@ class ETDL
             instance_attributes[:firewall] << {:proto => rule.name, :value => rule.text}
           end
         }
-    
+
       elsif c.name == 'packages'
         c.children.each { |pkg|
           unless pkg['name'].nil?
@@ -57,7 +57,7 @@ class ETDL
             instance_attributes[:packages] << pkg['name']
           end
         }
-    
+
       elsif c.name == 'services'
         c.children.each { |srv|
           unless srv['name'].nil?
@@ -74,7 +74,7 @@ class ETDL
             instance_attributes[:services] << {:name => srv['name'], :pre => pre_cmds, :post => post_cmds}
           end
         }
-    
+
       elsif c.name == 'dirs'
         c.children.each { |dir|
           owner = dir['owner'] || 'root'
@@ -83,7 +83,7 @@ class ETDL
           instance_attributes[:dirs] ||= []
           instance_attributes[:dirs] << {:name => dir.text, :owner => owner, :group => group, :remove => remove} if dir.text.strip != ""
         }
-    
+
       elsif c.name == 'files'
         c.children.each { |file|
           unless file['name'].nil?
@@ -96,7 +96,7 @@ class ETDL
                                             :contents => file.text}
           end
         }
-    
+
       elsif c.name == 'commands'
         c.children.each { |cmd|
           unless cmd.name != "command"

@@ -26,7 +26,7 @@ class CloudInst
 
   def initialize(cloud_attributes)
     # Use deltacloud to launch and setup instance
-    cloud_type = cloud_attributes[:type].intern
+    @cloud_type = cloud_attributes[:type].intern
 
     @image   = cloud_attributes[:image]
     @keyname = cloud_attributes[:keyname]
@@ -34,10 +34,13 @@ class CloudInst
     @dc = DeltaCloud.new(cloud_attributes[:username],
                          cloud_attributes[:password],
                          DC_URL)
-    @dc.use_driver cloud_type
+    @dc.use_driver @cloud_type
 
     @dc.instance_variable_set :@api_provider,
-                              cloud_attributes[:provider] if cloud_type == :openstack # XXX needed for openstack
+                              cloud_attributes[:provider] if @cloud_type == :openstack # XXX needed for openstack
+
+    @ssh = cloud_attributes[:ssh_cmd]
+    @scp = cloud_attributes[:scp_cmd]
   end
 
   def launch
@@ -48,23 +51,23 @@ class CloudInst
     end
 
     # set various propertries from the instance
-    dc_inst = (cloud_type == :openstack ? @dc.instances.first : @dc.instances.last) # XXX for openstack its first, for ec2 its last
+    dc_inst = (@cloud_type == :openstack ? @dc.instances.first : @dc.instances.last) # XXX for openstack its first, for ec2 its last
     address =  dc_inst.public_addresses.first
     address = dc_inst.private_addresses.first if address.nil?
     @address = address[:address]
 
-    @ssh = cloud_attributes[:ssh_cmd].gsub(/\[address\]/, address)
-    @scp = cloud_attributes[:scp_cmd].gsub(/\[address\]/, address)
+    @ssh = @ssh.gsub(/\[address\]/, address)
+    @scp = @scp.gsub(/\[address\]/, address)
 
     self
   end
 
   def exec(cmd)
-    `#{ssh} #{cmd}`
+    `#{@ssh} #{cmd}`
   end
 
   def cp(from, to, append=false)
-    scpf = scp.gsub(/\[source\]/, from).
+    scpf = @scp.gsub(/\[source\]/, from).
                gsub(/\[dst\]/,    from)
     `#{scpf}`
     if append
