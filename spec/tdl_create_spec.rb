@@ -15,7 +15,7 @@ describe "tdl-create" do
     $?.exitstatus.should == 0
 
     # XXX remove prompts from output
-    output.slice!(0..113)
+    output.slice!(0..124)
 
     doc = Nokogiri::XML(output)
     doc.xpath('/template/name').first.content.should == 'custom-name'

@@ -51,4 +51,4 @@ class TDLVerify < Thor
   end
 end
 
-TDLVerify.start(ARGV) if __FILE__ == $0
+TDLVerify.start(ARGV)
