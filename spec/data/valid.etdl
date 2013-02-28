@@ -1,0 +1,22 @@
+<template>
+  <cloud>
+    <type>ec2</type>
+    <provider></provider>
+    <username></username>
+    <password></password>
+    <image></image>
+    <keyname></keyname>
+    <ssh_cmd></ssh_cmd>
+    <scp_cmd></scp_cmd>
+  </cloud>
+
+  <name>f12jeos</name>
+  <os>
+    <name>Fedora</name>
+    <version>12</version>
+    <arch>x86_64</arch>
+    <install type='url'>
+      <url>http://download.fedoraproject.org/pub/fedora/linux/releases/12/Fedora/x86_64/os/</url>
+    </install>
+  </os>
+</template>
