@@ -107,7 +107,7 @@ class ETDL
         }
       end
     }
-    pp instance_attributes
+    #pp instance_attributes
     #pp cloud_attributes
 
     etdl = ETDL.new :cloud_attributes    => cloud_attributes,

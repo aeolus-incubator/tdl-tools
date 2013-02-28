@@ -18,7 +18,7 @@
 #
 ###########################################################
 
-require 'pp'
+require 'thor'
 require 'colored'
 require 'nokogiri'
 require 'tempfile'
@@ -26,26 +26,39 @@ require 'tempfile'
 require 'etdl'
 require 'etdl_processor'
 
-###############################################################
-# Read in configuration from cmd line and xml file
+VERSION = "0.1.0"
 
-if ARGV.size != 1
-  puts "Usage: tdl-launch.rb <path-to-tdl>".red
-  exit 1
+class TDLLaunch < Thor
+  desc "launch [path-to-etdl]", "Launch etdl specified on the command line"
+  def launch(path)
+    say "Launching eTDL #{path}".bold
+
+    unless File.readable?(path)
+      puts "eTDL #{path} is not readable".red
+      exit 1
+    end
+
+    doc  = Nokogiri::XML(open(path))
+    etdl = TDLTools::ETDL.parse(doc)
+
+    launch = ETDLProcessor.new
+
+    etdl.process(launch)
+
+    puts "Done!".bold
+  end
+
+  map "--version" => :__version
+  desc "--version", "Version information"
+  def __version
+    say "tdl-tools launch #{VERSION}"
+  end
+
+  desc "help", "Command usage and other information"
+  def help
+    say 'Launch an eTDL'
+    super
+  end
 end
 
-ETDL = ARGV.first
-
-unless File.readable?(ETDL)
-  puts "eTDL #{ETDL} is not readable".red
-  exit 1
-end
-
-doc  = Nokogiri::XML(open(ARGV.first))
-etdl = TDLTools::ETDL.parse(doc)
-
-launch = ETDLProcessor.new
-
-etdl.process(launch)
-
-puts "Done!".bold
+TDLLaunch.start(ARGV)
