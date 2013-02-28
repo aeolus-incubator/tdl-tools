@@ -22,6 +22,10 @@
       <rootpw></rootpw>
   </os>
 
+  <packages>
+    <package name="" />
+  </packages>
+
   <files>
     <file name="">
     </file>
