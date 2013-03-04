@@ -8,6 +8,7 @@
 ###########################################################
 
 require 'cloud_inst'
+require 'package_system'
 
 ###############################################################
 # Use various subsystems to process an etdl
@@ -28,54 +29,18 @@ class ETDLProcessor
 
     puts "using address #{inst.address}\nssh:#{inst.ssh}\nscp:#{inst.scp}".green
 
+    # TODO compare instance to etdl os
+
     inst
   end
 
   def process(etdl, instance)
-    # TODO need to open firewall ports (we have to open them manually now)
-
-    # set hostname
-    hostname = etdl.instance_attributes[:hostname]
-      unless hostname.nil?
-        puts "Setting hostname to #{hostname}".green
-        instance.exec "sudo hostname #{hostname}"
-
-        # append hostname to /etc/hosts/
-        etdl.instance_attributes[:files] <<
-          {:name => '/etc/hosts', :append => true,
-           :owner => 'root', :group => 'root', :mode => 644,
-           :contents => "#{instance.address} #{hostname}"}
-      end
+    # TODO setup repos
 
     # yum install packages
     packages = etdl.instance_attributes[:packages].join(" ")
       puts "installing #{packages}".green
-      puts instance.exec("sudo yum install -y --nogpgcheck #{packages}").blue
-
-    # start services
-    services = etdl.instance_attributes[:services]
-      services.each { |s|
-        puts "starting/enabling service #{s[:name]}".green
-        s[:pre].each { |cmd|
-          puts " running precommand #{cmd}".green
-          puts instance.exec("sudo #{cmd}").blue
-        }
-        puts instance.exec("sudo service #{s[:name]} start").blue
-        puts instance.exec("sudo chkconfig --levels 35 #{s[:name]} on").blue
-        s[:post].each { |cmd|
-          puts " running postcommand #{cmd}".green
-          puts instance.exec("sudo #{cmd}").blue
-        }
-      }
-
-    # create dirs
-    dirs = etdl.instance_attributes[:dirs]
-      dirs.each { |d|
-        puts "creating dir #{d[:name]}".green
-        instance.exec("sudo rm -rf #{d[:name]}") if d[:remove]
-        instance.exec("sudo mkdir -p #{d[:name]}")
-        instance.exec("sudo chown #{d[:owner]}.#{d[:group]} #{d[:name]}")
-      }
+      puts instance.exec(TDLTools::PackageSystem.install_pkg_cmd(packages)).blue
 
     # copy files over
     files = etdl.instance_attributes[:files]
@@ -85,19 +50,20 @@ class ETDLProcessor
         tf.close
 
         instance.cp tf.path, f[:name]
-        instance.exec("sudo chown #{f[:owner]}.#{f[:group]} #{f[:name]}")
-        instance.exec("sudo chmod #{f[:mode]} #{f[:name]}")
       }
 
     cmds = etdl.instance_attributes[:commands]
       cmds.each { |c|
-        puts "running command #{c[:cmd]} as #{c[:user]}"
-        puts instance.exec("sudo -u #{c[:user]} -i #{c[:cmd]}").blue
+        puts "running command #{c[:cmd]}"
+        puts instance.exec("sudo -i #{c[:cmd]}").blue
       }
   end
 
   def verify(etdl, instance)
-    # TODO
+    etdl.verify_cmds.each { |v|
+        puts "running verification #{v}"
+        puts instance.exec("sudo -i #{v}").blue # TODO red if failed
+    }
   end
 
   def terminate_instance(instance)

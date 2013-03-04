@@ -56,8 +56,8 @@ class CloudInst
     address = dc_inst.private_addresses.first if address.nil?
     @address = address[:address]
 
-    @ssh = @ssh.gsub(/\[address\]/, address)
-    @scp = @scp.gsub(/\[address\]/, address)
+    @ssh = @ssh.gsub(/\[address\]/, @address)
+    @scp = @scp.gsub(/\[address\]/, @address)
 
     self
   end
@@ -68,14 +68,9 @@ class CloudInst
 
   def cp(from, to, append=false)
     scpf = @scp.gsub(/\[source\]/, from).
-               gsub(/\[dst\]/,    from)
+                gsub(/\[dst\]/,    from)
     `#{scpf}`
-    if append
-      `#{ssh} sudo 'cat #{to} #{from} > #{from}.new'`
-      `#{ssh} sudo mv #{from}.new #{to}`
-    else
     `#{ssh} sudo mv #{from} #{to}`
-    end
   end
 end
 end

@@ -29,7 +29,8 @@ class ETDL
   # Parse / return new eTDL instance from xml document
   def self.parse(doc)
     cloud_attributes    = {}
-    instance_attributes = {}
+    instance_attributes = { :repositories => [], :packages => [],
+                            :files        => [], :commands => [] }
     verify_cmds         = []
 
     doc.children.last.children.each { |c|
@@ -55,7 +56,6 @@ class ETDL
       elsif c.name == 'repositories'
         c.children.each { |repo|
           unless repo['name'].nil?
-            instance_attributes[:repositories] ||= []
             instance_attributes[:repositories] << { :name => repo['name'],
                                                     :url  => repo['url'] }
           end
@@ -64,7 +64,6 @@ class ETDL
       elsif c.name == 'packages'
         c.children.each { |pkg|
           unless pkg['name'].nil?
-            instance_attributes[:packages] ||= []
             instance_attributes[:packages] << pkg['name']
           end
         }
@@ -72,7 +71,6 @@ class ETDL
       elsif c.name == 'files'
         c.children.each { |file|
           unless file['name'].nil?
-            instance_attributes[:files] ||= []
             instance_attributes[:files] << {:name => file['name'],
                                             :contents => file.text.strip}
           end
@@ -81,15 +79,14 @@ class ETDL
       elsif c.name == 'commands'
         c.children.each { |cmd|
           unless cmd.name != "command"
-            instance_attributes[:commands] ||= []
             instance_attributes[:commands] << {:cmd => cmd.text.strip}
           end
         }
 
       elsif c.name == 'verify'
         c.children.each { |cmd|
-          unless cmd.name != "verify"
-            verify_cmds cmd.text.strip
+          unless cmd.name != "command"
+            verify_cmds << cmd.text.strip
           end
         }
 
