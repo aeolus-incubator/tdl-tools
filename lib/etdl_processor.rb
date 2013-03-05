@@ -55,14 +55,21 @@ class ETDLProcessor
     cmds = etdl.instance_attributes[:commands]
       cmds.each { |c|
         puts "running command #{c[:cmd]}"
-        puts instance.exec("sudo -i #{c[:cmd]}").blue
+        puts instance.exec("#{c[:cmd]}").blue
       }
   end
 
   def verify(etdl, instance)
     etdl.verify_cmds.each { |v|
         puts "running verification #{v}"
-        puts instance.exec("sudo -i #{v}").blue # TODO red if failed
+        output = instance.exec("#{v}")
+        if $?.to_i == 0
+          puts output.blue
+          puts "  ...success!".blue
+        else
+          puts output.red
+          puts "  ... #{v} failed".red
+        end
     }
   end
 
