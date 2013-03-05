@@ -1,45 +1,47 @@
---- for tdl-launch:
+--- type of cloud deploying instance/image to
 type:
-provider:
-username:
-password:
-image:
-keyname:
-ssh_cmd:
-scp_cmd:
+
+--- for tdl-launch:
+#provider:
+#username:
+#password:
+#image:
+#keyname:
+#ssh_cmd:
+#scp_cmd:
 
 --- for imagefactory ec2
-account:
-access_key:
-secret_access_key:
-certificate:
-key:
+#account:
+#access_key:
+#secret_access_key:
+#certificate:
+#key:
 
 --- for imagefactory openstack
-username:
-tenant:
-password:
-strategy:
-auth_url:
-glance_host:
-glance_port:
+#username:
+#tenant:
+#password:
+#strategy:
+#auth_url:
+#glance_host:
+#glance_port:
 
 --- for imagefactory rhevm
-username:
-password:
-api_url:
-nfs_path:
-nfs_dir:
-nfs_host:
-cluster:
-timeout:
+#username:
+#password:
+#api_url:
+#nfs_path:
+#nfs_dir:
+#nfs_host:
+#cluster:
+#timeout:
 
 --- for imagefactory vsphere
-username:
-password:
-api_url:
-username:
-password:
-datastore:
-compute_resource:
-network_name:
+#username:
+#password:
+#api_url:
+#username:
+#password:
+#datastore:
+#compute_resource:
+#network_name:

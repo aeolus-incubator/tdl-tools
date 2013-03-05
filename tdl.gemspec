@@ -4,7 +4,7 @@ GEM_NAME    = 'tdl'
 PKG_VERSION = '0.0.1'
 
 PKG_FILES =
-  Dir.glob('{lib,specs}/**/*.rb') + ['LICENSE', 'Rakefile', 'README.md']
+  Dir.glob('{lib,specs}/**/*.rb') + ['LICENSE', 'Rakefile', 'README.md', "tdl-config.yml"]
 
 Gem::Specification.new do |s|
     s.name    = GEM_NAME
