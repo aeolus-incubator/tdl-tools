@@ -10,6 +10,7 @@
 
 require 'thor'
 require 'yaml'
+require 'colored'
 
 VERSION = "0.1.0"
 BASIC_CONFIG  = 'tdl-config.yml'
@@ -18,10 +19,10 @@ class TDLConfig < Thor
   desc "create", "create a new tdl config file"
   method_options :interactive => :boolean
   def create
-    config = YAML.load(BASIC_CONFIG)
+    config = YAML.load(open(BASIC_CONFIG))
     config.merge!(run_interactive) if options[:interactive]
-    File.open(File.expand('~/.tdl-config.yml'), 'w') { |f| f.write config.to_s }
-    FileUtils.chmod(600, File.example('~/.tdl-config.yml'))
+    File.open(File.expand_path('~/.tdl-config.yml'), 'w') { |f| f.write config.to_yaml }
+    FileUtils.chmod(0600, File.expand_path('~/.tdl-config.yml'))
     puts '~/.tdl-config.yml created'.green
     puts 'Note ~/.tdl-config.yml may contain cloud credentials, ensure to properly secure'.bold
   end

@@ -1,23 +1,23 @@
---- type of cloud deploying instance/image to
+# type of cloud deploying instance/image to
 type:
 
---- for tdl-launch:
-#provider:
-#username:
-#password:
-#image:
-#keyname:
-#ssh_cmd:
-#scp_cmd:
+# for tdl-launch:
+provider:
+username:
+password:
+image:
+keyname:
+ssh_cmd:
+scp_cmd:
 
---- for imagefactory ec2
+# for imagefactory ec2
 #account:
 #access_key:
 #secret_access_key:
 #certificate:
 #key:
 
---- for imagefactory openstack
+# for imagefactory openstack
 #username:
 #tenant:
 #password:
@@ -26,7 +26,7 @@ type:
 #glance_host:
 #glance_port:
 
---- for imagefactory rhevm
+# for imagefactory rhevm
 #username:
 #password:
 #api_url:
@@ -36,7 +36,7 @@ type:
 #cluster:
 #timeout:
 
---- for imagefactory vsphere
+# for imagefactory vsphere
 #username:
 #password:
 #api_url:

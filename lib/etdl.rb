@@ -86,7 +86,8 @@ class ETDL
       elsif c.name == 'verify'
         c.children.each { |cmd|
           unless cmd.name != "command"
-            verify_cmds << cmd.text.strip
+            ccmd = cmd.text.strip
+            verify_cmds << ccmd unless ccmd.nil? || ccmd == ""
           end
         }
 
