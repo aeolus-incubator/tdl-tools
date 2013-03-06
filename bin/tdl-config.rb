@@ -12,14 +12,15 @@ require 'thor'
 require 'yaml'
 require 'colored'
 
-VERSION = "0.1.0"
-BASIC_CONFIG  = 'tdl-config.yml'
+require 'tdl_gem_path'
+
+VERSION = "0.0.2"
 
 class TDLConfig < Thor
   desc "create", "create a new tdl config file"
   method_options :interactive => :boolean
   def create
-    config = YAML.load(open(BASIC_CONFIG))
+    config = get_config
     config.merge!(run_interactive) if options[:interactive]
     File.open(File.expand_path('~/.tdl-config.yml'), 'w') { |f| f.write config.to_yaml }
     FileUtils.chmod(0600, File.expand_path('~/.tdl-config.yml'))
@@ -40,6 +41,18 @@ class TDLConfig < Thor
   end
 
   private
+  def get_config
+    config = {}
+    [TDLTools.gem_path + 'tdl-config.yml', '/etc/tdl-config.yml',
+     '~/.tdl-config.yml', './tdl-config.yml'].each { |c|
+      begin
+        config.merge!(YAML.load(open(File.expand_path(c))))
+      rescue Exception => e
+      end
+    }
+    config
+  end
+
   def run_interactive(output, options = {})
   end
 end

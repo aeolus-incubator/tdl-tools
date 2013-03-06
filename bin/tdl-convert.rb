@@ -11,7 +11,7 @@
 require 'thor'
 require 'nokogiri'
 
-VERSION = "0.1.0"
+VERSION = "0.0.2"
 
 class TDLConvert < Thor
   desc "convert", "convert tdl to/from etdl"

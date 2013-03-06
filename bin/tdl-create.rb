@@ -14,16 +14,16 @@ require 'nokogiri'
 # use fedora api to verify packages
 require 'pkgwat'
 
-VERSION = "0.1.0"
-SAMPLE_TDL  = 'data/sample.tdl'
-SAMPLE_ETDL = 'data/sample.etdl'
+require 'tdl_gem_path'
+
+VERSION = "0.0.2"
 
 class TDLCreate < Thor
   desc "tdl", "create a new TDL"
   method_options :interactive => :boolean
   method_options :verify      => :boolean
   def tdl
-    output = File.read(SAMPLE_TDL)
+    output = get_sample_tdl
     output = run_interactive(output, options) if options[:interactive]
     puts output
   end
@@ -32,7 +32,7 @@ class TDLCreate < Thor
   method_options :interactive => :boolean
   method_options :verify      => :boolean
   def etdl
-    output = File.read(SAMPLE_ETDL)
+    output = get_sample_etdl
     output = run_interactive(output, options) if options[:interactive]
     puts output
   end
@@ -92,6 +92,29 @@ class TDLCreate < Thor
     }
 
     output = xml.to_s
+  end
+
+  private
+  def get_sample_tdl
+    tdl = nil
+    [TDLTools.gem_path + 'data/sample.tdl', './data/sample.tdl'].each { |t|
+      begin
+        tdl = File.read(t)
+      rescue Exception => e
+      end
+    }
+    tdl
+  end
+
+  def get_sample_etdl
+    etdl = nil
+    [TDLTools.gem_path + 'data/sample.etdl', './data/sample.etdl'].each { |t|
+      begin
+        etdl = File.read(t)
+      rescue Exception => e
+      end
+    }
+    etdl
   end
 
 end

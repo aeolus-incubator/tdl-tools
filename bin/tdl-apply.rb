@@ -14,7 +14,7 @@ require 'colored'
 require 'tempfile'
 require 'nokogiri'
 
-VERSION = "0.1.0"
+VERSION = "0.0.2"
 
 class TDLApply < Thor
   desc "instance", "create a new instance from the tdl"
@@ -69,7 +69,7 @@ class TDLApply < Thor
     target_output =~ /UUID: (.*)\n/
     target_image = $1
 
-    provider_output `imagefactory provider_image --id #{target_image} #{provider_config.path} #{credential_config.path}`
+    provider_output `imagefactory provider_image --id #{target_image} #{config[:type]} #{provider_config.path} #{credential_config.path}`
     puts provider_output
   end
 

@@ -12,16 +12,16 @@ require 'thor'
 require 'nokogiri'
 require 'colored'
 
-VERSION = "0.1.0"
-TDL_RNG  = 'data/tdl.rng'
-ETDL_RNG = 'data/etdl.rng'
+require 'tdl_gem_path'
+
+VERSION = "0.0.2"
 
 class TDLVerify < Thor
   desc "verify [path-to-tdl]", "Verify the tdl (or etdl) specified on the command line"
   def verify(path)
     say "Validating (e)TDL".bold
-    rng = (File.extname(path) == ".etdl" ? ETDL_RNG : TDL_RNG)
-    xsd = Nokogiri::XML::RelaxNG(File.read(rng))
+    rng = get_rng_for(path)
+    xsd = Nokogiri::XML::RelaxNG(rng)
     doc = Nokogiri::XML(File.open(path))
     errs = xsd.validate(doc)
     if errs.empty?
@@ -48,6 +48,19 @@ class TDLVerify < Thor
   def help
     say 'Verify a TDL'
     super
+  end
+
+  private
+  def get_rng_for(path)
+    rng  = nil
+    rngf = (File.extname(path) == ".etdl" ? 'etdl.rng' : 'tdl.rng')
+    dirs = [TDLTools.gem_path + 'data/', './'].each { |d|
+      begin
+        rng = File.read(d + rngf)
+      rescue Exception => e
+      end
+    }
+    rng
   end
 end
 

@@ -1,10 +1,12 @@
 # -*- encoding: utf-8 -*-
 
 GEM_NAME    = 'tdl'
-PKG_VERSION = '0.0.1'
+PKG_VERSION = '0.0.2'
 
 PKG_FILES =
-  Dir.glob('{lib,specs}/**/*.rb') + ['LICENSE', 'Rakefile', 'README.md', "tdl-config.yml"]
+  Dir.glob('{lib,specs}/**/*.rb') +
+  Dir.glob('data/*') +
+    ['LICENSE', 'Rakefile', 'README.md', "tdl-config.yml"]
 
 Gem::Specification.new do |s|
     s.name    = GEM_NAME
@@ -23,7 +25,7 @@ Gem::Specification.new do |s|
 
     s.author = "Mo Morsi"
     s.email = "mmorsi@redhat.com"
-    s.date = %q{2013-02-26}
+    s.date = %q{2013-03-06}
     s.description = %q{Aeolus Template Description Language Tools}
     s.summary = %q{Aeolus tdl-tools}
     s.homepage = %q{http://aeolusproject.org/}
