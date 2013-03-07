@@ -18,7 +18,9 @@ Gem::Specification.new do |s|
     s.required_ruby_version = '>= 1.8.1'
     s.required_rubygems_version = Gem::Requirement.new(">= 1.3.3")
     s.add_development_dependency('rspec', '~> 2.11.0')
-    #s.add_dependency('', '')
+    s.add_runtime_dependency('thor')
+    s.add_runtime_dependency('nokogiri')
+    s.add_runtime_dependency('pkgwat')
 
     s.requirements = ['deltacloud is required to launch etdls against cloud instances',
                       'imagefactory is required to build images from tdls']
