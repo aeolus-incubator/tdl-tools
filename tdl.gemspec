@@ -1,7 +1,7 @@
 # -*- encoding: utf-8 -*-
 
 GEM_NAME    = 'tdl'
-PKG_VERSION = '0.0.2'
+PKG_VERSION = '0.0.3'
 
 PKG_FILES =
   Dir.glob('{lib,specs}/**/*.rb') +
@@ -21,13 +21,15 @@ Gem::Specification.new do |s|
     s.add_runtime_dependency('thor')
     s.add_runtime_dependency('nokogiri')
     s.add_runtime_dependency('pkgwat')
+    s.add_runtime_dependency('colored')
+    s.add_runtime_dependency('deltacloud-client')
 
     s.requirements = ['deltacloud is required to launch etdls against cloud instances',
                       'imagefactory is required to build images from tdls']
 
     s.author = "Mo Morsi"
     s.email = "mmorsi@redhat.com"
-    s.date = %q{2013-03-06}
+    s.date = %q{2013-03-07}
     s.description = %q{Aeolus Template Description Language Tools}
     s.summary = %q{Aeolus tdl-tools}
     s.homepage = %q{http://aeolusproject.org/}
