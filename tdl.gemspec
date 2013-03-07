@@ -1,7 +1,7 @@
 # -*- encoding: utf-8 -*-
 
 GEM_NAME    = 'tdl'
-PKG_VERSION = '0.0.3'
+PKG_VERSION = '0.0.4'
 
 PKG_FILES =
   Dir.glob('{lib,specs}/**/*.rb') +
