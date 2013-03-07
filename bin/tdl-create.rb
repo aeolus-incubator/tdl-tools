@@ -57,16 +57,27 @@ class TDLCreate < Thor
     begin
       packages   = []
       name        = ask("Template Name:")
+      raise :finished if name.nil?
+
       description = ask("Template Description:")
+      raise :finished if description.nil?
+
       os_name    = ask("OS Name:")
+      raise :finished if os_name.nil?
+
       os_version = ask("OS Version:")
+      raise :finished if os_version.nil?
+
       while true
         package = ask('Package:')
+        raise :finished if package.nil?
         packages << package
       end
+
       # TODO also files and commands
       # TODO also cloud and verify for etdls
-    rescue Exception => e
+
+    rescue :finished, Exception => e
       say "\n"
     end
 
