@@ -21,7 +21,7 @@ class TDLConfig < Thor
   method_options :interactive => :boolean
   def create
     config = get_config
-    config.merge!(run_interactive) if options[:interactive]
+    config.merge!(run_interactive(config)) if options[:interactive]
     File.open(File.expand_path('~/.tdl-config.yml'), 'w') { |f| f.write config.to_yaml }
     FileUtils.chmod(0600, File.expand_path('~/.tdl-config.yml'))
     puts '~/.tdl-config.yml created'.green
@@ -53,7 +53,23 @@ class TDLConfig < Thor
     config
   end
 
-  def run_interactive(output, options = {})
+  def run_interactive(config)
+    say 'tdl-config interactive mode, fill in cloud credentials'
+    say 'CTRL-D at any point to terminate'
+    say 'Leave any field blank to skip'
+    nconfig = {}
+
+    begin
+      config.each { |k,v|
+        val = ask("#{k}:")
+        raise :finished if val.nil?
+        nconfig[k] = val
+      }
+    rescue :finished, Exception => e
+      say "\n"
+    end
+
+    nconfig
   end
 end
 
